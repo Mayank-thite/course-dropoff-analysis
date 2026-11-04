@@ -28,3 +28,13 @@ TABLES = {
 EARLY_DAYS = 28
 # Presentation held out for testing the early-warning model.
 TEST_PRESENTATION = "2014J"
+# Share of students an advisor team could contact. Every scorer flags this share.
+FLAG_SHARE = 0.20
+SEED = 7
+
+
+def setup_logging() -> None:
+    """One log format for every pipeline step."""
+    import logging
+
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")

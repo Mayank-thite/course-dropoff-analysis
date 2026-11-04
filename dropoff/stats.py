@@ -4,6 +4,7 @@ from __future__ import annotations
 import math
 
 import numpy as np
+import pandas as pd
 from scipy import stats
 
 
@@ -25,6 +26,14 @@ def two_proportion_test(x1: int, n1: int, x2: int, n2: int, alpha: float = 0.05)
         "p1": p1, "p2": p2, "diff": diff, "z": z, "p_value": float(p_value),
         "ci_low": diff - zc * se, "ci_high": diff + zc * se,
     }
+
+
+def holm_adjust(p_values: pd.Series) -> pd.Series:
+    """Holm step-down adjusted p-values, in the same order as the input."""
+    p = p_values.sort_values()
+    m = len(p)
+    adj = (p * (m - np.arange(m))).cummax().clip(upper=1)
+    return adj.reindex(p_values.index)
 
 
 def precision_recall(y_true, y_flag) -> dict:
