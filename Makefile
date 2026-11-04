@@ -2,11 +2,12 @@
 # Uses PostgreSQL by default (DATABASE_URL). Without Postgres: make all DB_ENGINE=duckdb
 PYTHON ?= python3
 VENV   := .venv
-PY     := $(VENV)/bin/python
+# CI passes PY=python to skip the venv.
+PY     ?= $(VENV)/bin/python
 DB_ENGINE ?= postgres
 export DB_ENGINE
 
-.PHONY: all setup data load analysis charts powerbi dashboard test sample clean
+.PHONY: all setup data load analysis charts powerbi dashboard test lint sample clean
 
 all: setup data load analysis charts powerbi dashboard test
 
@@ -38,13 +39,16 @@ dashboard: setup
 test: setup
 	$(PY) -m pytest -q
 
+lint: setup
+	$(PY) -m ruff check .
+
 # Offline run on the small committed sample, with DuckDB. Writes to build/sample/.
 sample: export DB_ENGINE = duckdb
 sample: export DATA_DIR = data/sample
 sample: export OUT_DIR = build/sample
 sample: export DOCS_DIR = build/sample/docs
 sample: export DUCKDB_PATH = build/sample.duckdb
-sample: setup
+sample: $(if $(filter $(VENV)/bin/python,$(PY)),setup)
 	mkdir -p build
 	$(PY) -m dropoff.load
 	$(PY) -m dropoff.analysis

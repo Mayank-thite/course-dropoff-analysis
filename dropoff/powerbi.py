@@ -2,10 +2,14 @@
 
 Needs dropoff.analysis to have run first (it builds early_features and outputs/).
 """
+import logging
+
 import pandas as pd
 
 from . import config
 from .db import Database
+
+log = logging.getLogger(__name__)
 
 
 def main() -> None:
@@ -33,10 +37,11 @@ def main() -> None:
 
     s = pd.read_csv(config.OUT_DIR / "early_warning_test_scores.csv")
     s.to_csv(out / "fact_risk_score_2014J.csv", index=False)
-    print(f"Power BI tables written to {out}")
+    log.info(f"Power BI tables written to {out}")
     for p in sorted(out.glob("*.csv")):
-        print(f"  {p.name:<28} {sum(1 for _ in open(p)) - 1:>7,} rows")
+        log.info(f"  {p.name:<28} {sum(1 for _ in open(p)) - 1:>7,} rows")
 
 
 if __name__ == "__main__":
+    config.setup_logging()
     main()
