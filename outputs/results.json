@@ -1,0 +1,312 @@
+{
+  "database": "postgres",
+  "row_counts": {
+    "courses": 22,
+    "assessments": 206,
+    "vle": 6364,
+    "student_info": 32593,
+    "student_registration": 32593,
+    "student_assessment": 173912,
+    "student_vle": 10655280
+  },
+  "q1": {
+    "presentations": 22,
+    "funnel_overall": [
+      {
+        "stage": "registered",
+        "students": 32593,
+        "of_previous": 1.0,
+        "of_registered": 1.0
+      },
+      {
+        "stage": "started",
+        "students": 29915,
+        "of_previous": 0.9178351179701163,
+        "of_registered": 0.9178351179701163
+      },
+      {
+        "stage": "past_week4",
+        "students": 27553,
+        "of_previous": 0.9210429550392779,
+        "of_registered": 0.8453655692940202
+      },
+      {
+        "stage": "finished",
+        "students": 22429,
+        "of_previous": 0.8140311399847566,
+        "of_registered": 0.688153898076274
+      },
+      {
+        "stage": "passed",
+        "students": 15385,
+        "of_previous": 0.6859423068349012,
+        "of_registered": 0.47203387230386895
+      }
+    ],
+    "withdrawals_with_date": 10063,
+    "withdrawals_without_date": 93,
+    "withdrawals_before_start": 2676,
+    "withdrawals_before_start_share": 0.2659246745503329,
+    "withdrawals_weeks_1_4": 2356,
+    "withdrawals_weeks_1_4_share": 0.23412501242174302,
+    "peak_week_after_start": 2,
+    "peak_week_withdrawals": 1068,
+    "median_week_after_start": 10.0,
+    "lowest_finish": {
+      "module": "CCC",
+      "presentation": "2014B",
+      "finish_rate": 0.5361570247933884
+    },
+    "highest_finish": {
+      "module": "GGG",
+      "presentation": "2013J",
+      "finish_rate": 0.930672268907563
+    }
+  },
+  "q2": {
+    "assessments_ranked": 182,
+    "top_non_submission": [
+      {
+        "code_module": "GGG",
+        "code_presentation": "2013J",
+        "id_assessment": 37423,
+        "assessment_type": "CMA",
+        "due_day": 229,
+        "expected": 887,
+        "submitted": 470,
+        "non_submission_rate": 0.47012401352874855,
+        "avg_score": 87.44680851063829,
+        "below_40_share": 0.010638297872340425
+      },
+      {
+        "code_module": "CCC",
+        "code_presentation": "2014B",
+        "id_assessment": 24284,
+        "assessment_type": "TMA",
+        "due_day": 151,
+        "expected": 1154,
+        "submitted": 613,
+        "non_submission_rate": 0.4688041594454073,
+        "avg_score": 73.59150326797386,
+        "below_40_share": 0.07177814029363784
+      },
+      {
+        "code_module": "CCC",
+        "code_presentation": "2014B",
+        "id_assessment": 24285,
+        "assessment_type": "TMA",
+        "due_day": 200,
+        "expected": 1094,
+        "submitted": 583,
+        "non_submission_rate": 0.46709323583180984,
+        "avg_score": 69.29948364888124,
+        "below_40_share": 0.09605488850771869
+      },
+      {
+        "code_module": "GGG",
+        "code_presentation": "2014B",
+        "id_assessment": 37433,
+        "assessment_type": "CMA",
+        "due_day": 222,
+        "expected": 733,
+        "submitted": 394,
+        "non_submission_rate": 0.46248294679399726,
+        "avg_score": 85.0253807106599,
+        "below_40_share": 0.012690355329949238
+      },
+      {
+        "code_module": "CCC",
+        "code_presentation": "2014B",
+        "id_assessment": 24283,
+        "assessment_type": "TMA",
+        "due_day": 102,
+        "expected": 1262,
+        "submitted": 689,
+        "non_submission_rate": 0.4540412044374009,
+        "avg_score": 74.48040638606676,
+        "below_40_share": 0.10159651669085631
+      }
+    ],
+    "lowest_avg_score": [
+      {
+        "code_module": "BBB",
+        "code_presentation": "2014J",
+        "id_assessment": 15020,
+        "assessment_type": "TMA",
+        "due_day": 19,
+        "expected": 1804,
+        "submitted": 1695,
+        "non_submission_rate": 0.06042128603104213,
+        "avg_score": 59.145981087470446,
+        "below_40_share": 0.40943952802359884
+      },
+      {
+        "code_module": "DDD",
+        "code_presentation": "2014B",
+        "id_assessment": 25360,
+        "assessment_type": "TMA",
+        "due_day": 200,
+        "expected": 779,
+        "submitted": 450,
+        "non_submission_rate": 0.4223363286264442,
+        "avg_score": 59.22544642857143,
+        "below_40_share": 0.25333333333333335
+      },
+      {
+        "code_module": "DDD",
+        "code_presentation": "2013B",
+        "id_assessment": 25339,
+        "assessment_type": "TMA",
+        "due_day": 200,
+        "expected": 911,
+        "submitted": 503,
+        "non_submission_rate": 0.44785949506037326,
+        "avg_score": 60.17943548387097,
+        "below_40_share": 0.20675944333996024
+      },
+      {
+        "code_module": "DDD",
+        "code_presentation": "2013J",
+        "id_assessment": 25353,
+        "assessment_type": "TMA",
+        "due_day": 207,
+        "expected": 1300,
+        "submitted": 844,
+        "non_submission_rate": 0.3507692307692307,
+        "avg_score": 60.263657957244654,
+        "below_40_share": 0.2109004739336493
+      },
+      {
+        "code_module": "CCC",
+        "code_presentation": "2014B",
+        "id_assessment": 24286,
+        "assessment_type": "CMA",
+        "due_day": 18,
+        "expected": 1564,
+        "submitted": 1328,
+        "non_submission_rate": 0.15089514066496168,
+        "avg_score": 60.77560240963855,
+        "below_40_share": 0.18674698795180722
+      }
+    ],
+    "mean_non_submission_first_assessment": 0.10144815290599664,
+    "mean_non_submission_last_assessment": 0.3027019379755169,
+    "engagement_buckets": [
+      {
+        "bucket": 0,
+        "students": 1249,
+        "min_clicks": 0,
+        "max_clicks": 0,
+        "withdrew": 304,
+        "withdrawal_rate": 0.2433947157726181
+      },
+      {
+        "bucket": 1,
+        "students": 6608,
+        "min_clicks": 1,
+        "max_clicks": 79,
+        "withdrew": 1389,
+        "withdrawal_rate": 0.21019975786924938
+      },
+      {
+        "bucket": 2,
+        "students": 6593,
+        "min_clicks": 80,
+        "max_clicks": 188,
+        "withdrew": 1348,
+        "withdrawal_rate": 0.2044592749886243
+      },
+      {
+        "bucket": 3,
+        "students": 6542,
+        "min_clicks": 189,
+        "max_clicks": 383,
+        "withdrew": 1164,
+        "withdrawal_rate": 0.1779272393763375
+      },
+      {
+        "bucket": 4,
+        "students": 6561,
+        "min_clicks": 384,
+        "max_clicks": 6084,
+        "withdrew": 919,
+        "withdrawal_rate": 0.1400701112635269
+      }
+    ]
+  },
+  "q3": {
+    "train_presentations": [
+      "2013B",
+      "2013J",
+      "2014B"
+    ],
+    "test_presentation": "2014J",
+    "n_train": 18334,
+    "n_test": 9219,
+    "base_rate_test": 0.19362186788154898,
+    "auc_test": 0.5992275629649224,
+    "top_decile_withdrawal_rate": 0.40563991323210413,
+    "bottom_decile_withdrawal_rate": 0.13557483731019523,
+    "threshold": 0.1867811623755813,
+    "flag_share": 0.2,
+    "model": {
+      "tp": 557,
+      "fp": 1226,
+      "fn": 1228,
+      "flagged": 1783,
+      "precision": 0.3123948401570387,
+      "recall": 0.31204481792717087
+    },
+    "rule_active_days_cut": 4.0,
+    "rule": {
+      "tp": 532,
+      "fp": 1449,
+      "fn": 1253,
+      "flagged": 1981,
+      "precision": 0.26855123674911663,
+      "recall": 0.2980392156862745
+    },
+    "coefficients_per_sd": {
+      "log_clicks_w1_4": 0.08116065744666114,
+      "log_clicks_w3_4": 0.17472029689148874,
+      "active_days_w1_4": -0.25477743880083614,
+      "early_assessments_missed": 0.38937582125684095,
+      "log_clicks_pre_start": 0.01993105700684708
+    }
+  },
+  "q4": {
+    "group_a": {
+      "label": "opened the VLE before day 0",
+      "students": 23370,
+      "withdrew": 5325,
+      "passed": 13176
+    },
+    "group_b": {
+      "label": "did not open the VLE before day 0",
+      "students": 6545,
+      "withdrew": 2155,
+      "passed": 2209
+    },
+    "withdrawal": {
+      "p1": 0.22785622593068036,
+      "p2": 0.3292589763177998,
+      "diff": -0.10140275038711946,
+      "z": -16.7442069899031,
+      "p_value": 6.241670293594157e-63,
+      "ci_low": -0.11399409563362492,
+      "ci_high": -0.088811405140614
+    },
+    "pass": {
+      "p1": 0.5637997432605905,
+      "p2": 0.33750954927425514,
+      "diff": 0.22629019398633532,
+      "z": 32.3752300079794,
+      "p_value": 6.126818343251379e-230,
+      "ci_low": 0.21318826268183882,
+      "ci_high": 0.23939212529083181
+    },
+    "modules_where_a_withdraws_less": 7,
+    "modules_where_a_less_and_significant": 6,
+    "modules": 7
+  }
+}

@@ -1,0 +1,15 @@
+code_module,grp,students,withdrew,passed
+AAA,A_pre_start_vle,680,97,505
+AAA,B_no_pre_start_vle,48,9,26
+BBB,A_pre_start_vle,4696,818,2881
+BBB,B_no_pre_start_vle,2356,713,873
+CCC,A_pre_start_vle,3298,1173,1538
+CCC,B_no_pre_start_vle,673,339,140
+DDD,A_pre_start_vle,5036,1417,2466
+DDD,B_no_pre_start_vle,720,318,144
+EEE,A_pre_start_vle,2114,329,1442
+EEE,B_no_pre_start_vle,637,210,208
+FFF,A_pre_start_vle,6148,1387,3408
+FFF,B_no_pre_start_vle,1040,443,240
+GGG,A_pre_start_vle,1398,104,936
+GGG,B_no_pre_start_vle,1071,123,578

@@ -1,0 +1,88 @@
+// DAX measures for a course retention dashboard.
+// Tables: fact_enrolment, fact_assessment, dim_presentation, fact_risk_score_2014J
+// Relationships: dim_presentation[presentation_key] 1-* fact_enrolment[presentation_key]
+//                dim_presentation[presentation_key] 1-* fact_assessment[presentation_key]
+
+Registrations = COUNTROWS ( fact_enrolment )
+
+Started = SUM ( fact_enrolment[is_started] )
+
+Past Week 4 = CALCULATE ( [Started], fact_enrolment[is_past_week4] = 1 )
+
+Withdrawn = SUM ( fact_enrolment[is_withdrawn] )
+
+Finished =
+CALCULATE (
+    COUNTROWS ( fact_enrolment ),
+    fact_enrolment[is_past_week4] = 1,
+    fact_enrolment[is_started] = 1,
+    fact_enrolment[is_withdrawn] = 0
+)
+
+Passed =
+CALCULATE (
+    COUNTROWS ( fact_enrolment ),
+    fact_enrolment[is_past_week4] = 1,
+    fact_enrolment[is_started] = 1,
+    fact_enrolment[is_passed] = 1
+)
+
+Finish Rate = DIVIDE ( [Finished], [Registrations] )
+
+Pass Rate = DIVIDE ( [Passed], [Registrations] )
+
+Withdrawal Rate = DIVIDE ( [Withdrawn], [Registrations] )
+
+Withdrawn Before Start =
+CALCULATE ( [Withdrawn], fact_enrolment[withdrawal_week] <= 0 )
+
+Withdrawn Weeks 1-4 =
+CALCULATE ( [Withdrawn], fact_enrolment[withdrawal_week] >= 1, fact_enrolment[withdrawal_week] <= 4 )
+
+Share Withdrawn Before Start =
+DIVIDE ( [Withdrawn Before Start], CALCULATE ( [Withdrawn], NOT ISBLANK ( fact_enrolment[withdrawal_week] ) ) )
+
+// Use on a chart with fact_enrolment[withdrawal_week] on the axis.
+Withdrawals In Week = CALCULATE ( [Withdrawn], NOT ISBLANK ( fact_enrolment[withdrawal_week] ) )
+
+Cumulative Withdrawals By Week =
+VAR wk = MAX ( fact_enrolment[withdrawal_week] )
+RETURN
+    CALCULATE (
+        [Withdrawn],
+        FILTER ( ALL ( fact_enrolment[withdrawal_week] ), fact_enrolment[withdrawal_week] <= wk )
+    )
+
+No Early VLE Activity =
+CALCULATE ( COUNTROWS ( fact_enrolment ), fact_enrolment[is_started] = 1, fact_enrolment[clicks_w1_4] = 0 )
+
+Avg Clicks Weeks 1-4 =
+CALCULATE ( AVERAGE ( fact_enrolment[clicks_w1_4] ), fact_enrolment[is_started] = 1 )
+
+// Assessment difficulty
+Expected Submissions = SUM ( fact_assessment[expected] )
+
+Submissions = SUM ( fact_assessment[submitted] )
+
+Non Submission Rate = 1 - DIVIDE ( [Submissions], [Expected Submissions] )
+
+Avg Score (weighted by submissions) =
+DIVIDE (
+    SUMX ( fact_assessment, fact_assessment[avg_score] * fact_assessment[submitted] ),
+    [Submissions]
+)
+
+// Early-warning model on the held-out 2014J presentation
+Flagged Students = CALCULATE ( COUNTROWS ( fact_risk_score_2014J ), fact_risk_score_2014J[flagged] = TRUE () )
+
+Flag Precision =
+DIVIDE (
+    CALCULATE ( COUNTROWS ( fact_risk_score_2014J ), fact_risk_score_2014J[flagged] = TRUE (), fact_risk_score_2014J[withdrew] = TRUE () ),
+    [Flagged Students]
+)
+
+Flag Recall =
+DIVIDE (
+    CALCULATE ( COUNTROWS ( fact_risk_score_2014J ), fact_risk_score_2014J[flagged] = TRUE (), fact_risk_score_2014J[withdrew] = TRUE () ),
+    CALCULATE ( COUNTROWS ( fact_risk_score_2014J ), fact_risk_score_2014J[withdrew] = TRUE () )
+)
