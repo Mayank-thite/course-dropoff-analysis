@@ -5,11 +5,11 @@ Database: postgres. Rows loaded: courses 22, assessments 206, vle 6,364, student
 ## Q1. Where students drop off
 
 - Across 22 module presentations, 32,593 registrations.
-- started: 29,915 (91.8% of previous stage, 91.8% of registered)
-- past_week4: 27,553 (92.1% of previous stage, 84.5% of registered)
-- finished: 22,429 (81.4% of previous stage, 68.8% of registered)
+- started: 29,917 (91.8% of previous stage, 91.8% of registered)
+- past_week4: 27,561 (92.1% of previous stage, 84.6% of registered)
+- finished: 22,437 (81.4% of previous stage, 68.8% of registered)
 - passed: 15,385 (68.6% of previous stage, 47.2% of registered)
-- Withdrawals with a recorded day: 10,063. Before the start: 2,676 (26.6%). Weeks 1-4: 2,356 (23.4%). Withdrawn with no recorded day: 93.
+- Withdrawals with a recorded day: 10,063. Before the start: 2,676 (26.6%). Weeks 1-4: 2,356 (23.4%). Withdrawn with no recorded day: 93. Registered after day 0: 234 (counted in the day 0 stage).
 - After the start, the busiest week is week 2 (1,068 withdrawals). Median week after the start: 10.
 - Lowest finish rate: CCC 2014B (53.6%). Highest: GGG 2013J (93.1%).
 
@@ -30,26 +30,34 @@ Database: postgres. Rows loaded: courses 22, assessments 206, vle 6,364, student
   - CCC 2014B CMA 24286 (day 18): mean 60.8, 18.7% below 40
 - Mean non-submission, first assessment of a presentation: 10.1%; last assessment: 30.3%.
 - Withdrawal rate by weeks 1-4 VLE clicks (students still registered at day 28):
-  - zero clicks: 24.3% of 1,249
-  - quartile 1 (1-79 clicks): 21.0% of 6,608
-  - quartile 2 (80-188 clicks): 20.4% of 6,593
-  - quartile 3 (189-383 clicks): 17.8% of 6,542
-  - quartile 4 (384-6084 clicks): 14.0% of 6,561
+  - zero clicks: 21.9% of 1,213
+  - quartile 1 (1-79 clicks): 20.7% of 6,585
+  - quartile 2 (80-188 clicks): 20.3% of 6,581
+  - quartile 3 (189-383 clicks): 17.7% of 6,534
+  - quartile 4 (384-6084 clicks): 13.9% of 6,555
 
 ## Q3. Early warning from weeks 1-4
 
-- Train: 2013B, 2013J, 2014B (18,334 students). Test: 2014J (9,219 students).
-- Test withdrawal base rate: 19.4%. AUC: 0.599.
-- Withdrawal rate in the highest risk decile: 40.6%; lowest decile: 13.6%.
-- Lift of the model's flagged group over the base rate: 1.61x.
-- Flagging the top 20% by risk (cut set on train): flagged 1,783, precision 31.2%, recall 31.2%.
-- Simple rule (active on 4 or fewer days in weeks 1-4): flagged 1,981, precision 26.9%, recall 29.8%.
-- Coefficients (per standard deviation, positive = more likely to withdraw): log_clicks_w1_4 +0.08, log_clicks_w3_4 +0.17, active_days_w1_4 -0.25, early_assessments_missed +0.39, log_clicks_pre_start +0.02
+- Train: 2013B, 2013J, 2014B (18,323 students). Test: 2014J (9,127 students).
+- Test withdrawal base rate: 18.6% (this is also the PR-AUC of random guessing).
+- Each scorer flags the top 20% by risk, cut set on train:
+  - Rule: fewest active days: AUC 0.586, PR-AUC 0.225, flagged 1,915, precision 24.5%, recall 27.7%
+  - Logistic regression, first version (5 features): AUC 0.589, PR-AUC 0.262, flagged 1,730, precision 28.5%, recall 29.1%
+  - Logistic regression (14 features): AUC 0.660, PR-AUC 0.325, flagged 1,410, precision 38.2%, recall 31.7%
+  - Gradient boosting (14 features): AUC 0.675, PR-AUC 0.342, flagged 1,455, precision 39.5%, recall 33.8%
+- Main model (14-feature logistic regression): lift of the flagged group over the base rate 2.05x.
+- Withdrawal rate in the highest risk decile: 41.4%; lowest decile: 8.8%. All deciles, lowest risk first: 8.8%, 12.7%, 11.6%, 11.9%, 14.8%, 15.6%, 18.8%, 20.6%, 29.6%, 41.4%.
+- Coefficients (per standard deviation, positive = more likely to withdraw): log_clicks_w1_4 +0.33, click_trend +0.11, active_days_w1_4 +0.16, active_days_w3_4 -0.27, days_since_active +0.09, click_rank_in_presentation -0.23, log_clicks_pre_start +0.02, early_assessments_due +0.12, early_assessments_missed +0.31, has_early_score +0.32, early_score_rank_in_presentation -0.51, days_registered_before_start +0.12, log_studied_credits +0.20, num_of_prev_attempts -0.04
 
 ## Q4. Observational A/B: opened the VLE before the start vs not
 
-- Group A (opened the VLE before day 0): 23,370 students, withdrawal 22.8%, pass 56.4%.
-- Group B (did not open the VLE before day 0): 6,545 students, withdrawal 32.9%, pass 33.8%.
-- Withdrawal difference A - B: -10.1 points, 95% CI -11.4 to -8.9, z = -16.7, p = 6.2e-63.
-- Pass difference A - B: 22.6 points, 95% CI 21.3 to 23.9.
-- Inside each module: A withdraws less in 7 of 7 modules, significant at 5% in 6.
+- Group A (opened the VLE before day 0): 23,314 students, withdrawal 22.6%, pass 56.5%.
+- Group B (did not open the VLE before day 0): 6,266 students, withdrawal 33.0%, pass 33.3%.
+- Withdrawal difference A - B: -10.4 points, 95% CI -11.7 to -9.1, z = -17.0, p = 1.4e-64.
+- Pass difference A - B: 23.2 points, 95% CI 21.9 to 24.5.
+- Inside each module: A withdraws less in 7 of 7 modules, significant at 5% in 6 (6 after Holm's correction).
+- Adjusted (logistic regression, average marginal effect, SEs clustered by presentation, n = 29,580). Raw gap -10.4 points:
+  - Module presentation only: -15.1 points, 95% CI -17.4 to -12.9, odds ratio 0.46
+  - + registration timing: -15.4 points, 95% CI -17.7 to -13.2, odds ratio 0.45
+  - + study load and background: -14.5 points, 95% CI -16.7 to -12.3, odds ratio 0.46
+- Inverse probability weighting with the full controls: -15.5 points (propensity range 0.23 to 0.98).
