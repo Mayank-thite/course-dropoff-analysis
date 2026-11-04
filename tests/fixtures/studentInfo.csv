@@ -1,0 +1,7 @@
+code_module,code_presentation,id_student,gender,region,highest_education,imd_band,age_band,num_of_prev_attempts,studied_credits,disability,final_result
+XXX,2014J,1,F,Wales,A Level or Equivalent,?,0-35,0,60,N,Pass
+XXX,2014J,2,M,Wales,A Level or Equivalent,10-20,0-35,0,60,N,Distinction
+XXX,2014J,3,F,Wales,A Level or Equivalent,10-20,35-55,0,60,N,Fail
+XXX,2014J,4,M,Wales,A Level or Equivalent,10-20,0-35,0,60,N,Withdrawn
+XXX,2014J,5,F,Wales,A Level or Equivalent,10-20,0-35,0,60,N,Withdrawn
+XXX,2014J,6,M,Wales,A Level or Equivalent,10-20,0-35,0,60,N,Withdrawn
