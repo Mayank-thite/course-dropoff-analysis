@@ -13,8 +13,8 @@ SELECT
     r.date_unregistration,
     CASE WHEN i.final_result = 'Withdrawn' AND r.date_unregistration IS NOT NULL
          THEN CAST(FLOOR(r.date_unregistration / 7.0) AS INTEGER) + 1 END AS withdrawal_week,
-    CASE WHEN r.date_unregistration IS NULL OR r.date_unregistration >= 0  THEN 1 ELSE 0 END AS is_started,
-    CASE WHEN r.date_unregistration IS NULL OR r.date_unregistration >= 28 THEN 1 ELSE 0 END AS is_past_week4,
+    CASE WHEN i.final_result <> 'Withdrawn' OR r.date_unregistration IS NULL OR r.date_unregistration >= 0  THEN 1 ELSE 0 END AS is_started,
+    CASE WHEN i.final_result <> 'Withdrawn' OR r.date_unregistration IS NULL OR r.date_unregistration >= 28 THEN 1 ELSE 0 END AS is_past_week4,
     CASE WHEN i.final_result = 'Withdrawn' THEN 1 ELSE 0 END                AS is_withdrawn,
     CASE WHEN i.final_result IN ('Pass', 'Distinction') THEN 1 ELSE 0 END   AS is_passed,
     f.clicks_pre_start,

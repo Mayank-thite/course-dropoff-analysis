@@ -1,9 +1,10 @@
 -- Q2b. Withdrawal rate by how much a student used the VLE in weeks 1-4.
--- Population: still registered at day 28, so the outcome is not already known.
+-- Population: still registered at day 28 with a known withdrawal day, so the
+-- outcome is not already known.
 -- Students with zero clicks are their own group. The rest are split at the
 -- 25th, 50th and 75th percentile of clicks (ties stay in the same group).
 WITH pop AS (
-    SELECT * FROM early_features WHERE registered_at_day28
+    SELECT * FROM early_features WHERE registered_at_day28 AND withdrawal_day_known
 ),
 cuts AS (
     SELECT

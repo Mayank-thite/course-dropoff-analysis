@@ -1,5 +1,6 @@
 -- Q2a. Which assessments are hardest?
--- expected  : students still registered on the due day (exams without a date use the last day)
+-- expected  : students registered by the due day and not withdrawn before it
+--             (a withdrawal on the due day counts as not expected)
 -- submitted : of those, how many have a submission row
 -- avg_score : mean score of submissions (0-100); pass mark is 40
 -- Exams are left out: OULAD does not include exam results for several modules,
@@ -24,7 +25,13 @@ expected AS (
     JOIN student_registration r
       ON r.code_module = a.code_module
      AND r.code_presentation = a.code_presentation
-    WHERE r.date_unregistration IS NULL OR r.date_unregistration > a.due_day
+    JOIN student_info i
+      ON i.code_module = r.code_module
+     AND i.code_presentation = r.code_presentation
+     AND i.id_student = r.id_student
+    WHERE (r.date_registration IS NULL OR r.date_registration <= a.due_day)
+      AND (i.final_result <> 'Withdrawn' OR r.date_unregistration IS NULL
+           OR r.date_unregistration > a.due_day)
 ),
 joined AS (
     SELECT e.id_assessment, e.id_student, sa.score,
