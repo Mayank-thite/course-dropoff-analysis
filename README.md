@@ -171,6 +171,13 @@ docs/           charts, dashboard.html, powerbi.md
 tests/          pytest with a hand-checked fixture
 ```
 
+## Problems I ran into
+
+- **Students who had already left.** 93 withdrawn students had no unregistration date and were being counted as still enrolled at day 28. Most had no clicks at all. They made the early-warning model look better than it was, so I took them out of the prediction population.
+- **A harder test in one year.** Raw scores flagged hundreds of BBB students as high risk who then stayed, because the first assignment in BBB 2014J was much harder than in earlier years. Ranking each score within its own course run fixed it.
+- **Confounding in the A/B comparison.** Courses where most students log in early also lose more students overall, which hid part of the gap. Adding controls made the gap bigger (from 10.4 to 14.5 points), not smaller. It's still observational, not causal.
+- **Two databases, one answer.** Gradient boosting gave slightly different AUCs on PostgreSQL and DuckDB because the row order differed. Sorting the features and turning off random early stopping made the findings identical on both.
+
 ## License
 
 Code: MIT, see `LICENSE`. Data: OULAD by The Open University, CC BY 4.0. The sample in `data/sample/` and the tables in `outputs/` are derived from it.
