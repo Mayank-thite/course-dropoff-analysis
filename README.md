@@ -1,14 +1,36 @@
-# Course drop-off analysis
+<div align="center">
+
+<img src="docs/img/banner.svg" alt="Course Drop-off Analysis" width="100%">
+
+Retention analysis on the Open University's public learning data:<br>a drop-off funnel, the hardest parts, a day 28 warning model, and a fair comparison of two groups.
+
+[![CI](https://github.com/Mayank-thite/course-dropoff-analysis/actions/workflows/ci.yml/badge.svg)](https://github.com/Mayank-thite/course-dropoff-analysis/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-SQL-4169E1?logo=postgresql&logoColor=white)
+![DuckDB](https://img.shields.io/badge/DuckDB-optional-FFF000?logo=duckdb&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-model-F7931E?logo=scikitlearn&logoColor=white)
+![Power BI](https://img.shields.io/badge/Power%20BI-ready-F2C811?logo=powerbi&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-F7DF1E)
+
+![Withdrawals before day 28](https://img.shields.io/badge/Withdrawals%20before%20day%2028-half-EA580C)
+![Day 28 warning model](https://img.shields.io/badge/Day%2028%20warning%20model-AUC%200.660-F97316)
+![Early login gap after controls](https://img.shields.io/badge/Early%20login%20gap%20after%20controls-gets%20bigger-C2410C)
+[![Live dashboard](https://img.shields.io/badge/Live%20dashboard-open-0F172A?logo=githubpages&logoColor=white)](https://mayank-thite.github.io/course-dropoff-analysis/dashboard.html)
+
+[**Data**](#-data) · [**How to run**](#-how-to-run) · [**1. Where students drop off**](#-1-where-students-drop-off) · [**2. What is hardest**](#-2-what-is-hardest) · [**3. Early warning at day 28**](#-3-early-warning-at-day-28) · [**4. Observational A/B: opened the VLE before the start vs not**](#-4-observational-ab-opened-the-vle-before-the-start-vs-not) · [**Limitations**](#-limitations) · [**Technical details**](#-technical-details) · [**Problems I ran into**](#-problems-i-ran-into)
+
+</div>
 
 Built in 2026 on public data, to show the kind of retention and drop-off analysis I did at an ed-tech startup, where the data was private.
 
 I wanted to know where students leave an online course, which parts are hardest, whether the first four weeks can warn us early, and how to compare two groups of students without fooling myself. The SQL runs in PostgreSQL (or DuckDB). Python does the stats, the model and the charts. There are tables and DAX measures for Power BI, and a small HTML dashboard.
 
-The short version: half of all dated withdrawals happen before day 28, so onboarding matters more than the final exam. A day 28 warning model works, but only modestly (AUC 0.660), and the "students who log in early stay" gap does not shrink when I control for course and background. It gets bigger.
+> [!NOTE]
+> The short version: half of all dated withdrawals happen before day 28, so onboarding matters more than the final exam. A day 28 warning model works, but only modestly (AUC 0.660), and the "students who log in early stay" gap does not shrink when I control for course and background. It gets bigger.
 
 ![Dashboard](docs/img/dashboard.png)
 
-## Data
+## 🧾 Data
 
 The [Open University Learning Analytics Dataset (OULAD)](https://archive.ics.uci.edu/dataset/349/open+university+learning+analytics+dataset) from the UCI Machine Learning Repository. It covers 7 anonymised modules, 22 presentations in 2013 and 2014, 32,593 registrations, and 10,655,280 rows of daily click counts on the online learning platform (the VLE).
 
@@ -23,7 +45,7 @@ A few data rules I apply everywhere, because the raw tables disagree with themse
 - 234 people registered after day 0. They count in the "not withdrawn by day 0" stage, which is why I don't call it "enrolled on day 0". They are out of the A/B, since they couldn't have opened the VLE before the start.
 - An assessment only "expects" a student who had registered by its due day.
 
-## How to run
+## 🚀 How to run
 
 I tested it with Python 3.13 and PostgreSQL 16. With Postgres running locally:
 
@@ -48,7 +70,7 @@ On my machine `make all` takes under a minute once the data is downloaded. I ran
 
 Every number below is copied from `outputs/findings.md`, which `dropoff/analysis.py` writes.
 
-## 1. Where students drop off
+## 📉 1. Where students drop off
 
 ![Funnel](docs/img/funnel.png)
 
@@ -66,7 +88,7 @@ Every number below is copied from `outputs/findings.md`, which `dropoff/analysis
 
 So a lot of the loss happens before or right at the start. That points at onboarding and the first two weeks as the place to act.
 
-## 2. What is hardest
+## 🧗 2. What is hardest
 
 Non-submission means a student had registered by the due day, hadn't withdrawn, and sent nothing. I left exams out, because OULAD has no exam results for several modules.
 
@@ -86,7 +108,7 @@ The lowest average score is BBB 2014J TMA 15020, due on day 19, with a mean of 5
 
 Among students still enrolled at day 28, withdrawal falls as week 1 to 4 clicks rise, from 21.9% with zero clicks to 13.9% in the top quarter. The pattern is real but gentler than I expected.
 
-## 3. Early warning at day 28
+## 🚨 3. Early warning at day 28
 
 The question: on day 28, which students still enrolled should an advisor call? I trained on 2013B, 2013J and 2014B (18,323 students) and tested on 2014J (9,127 students), like using last year's model on a new intake. The withdrawal base rate in 2014J is 18.6%, which is also what a random guess scores on PR-AUC. Each scorer flags the top 20% of students by risk, with the cut set on the training years.
 
@@ -109,7 +131,7 @@ The cut set on the training years flags only 1,410 students in 2014J instead of 
 
 My honest read: this is a useful short call list, about twice the base rate, not a verdict. Two thirds of the students who later withdraw still look fine at day 28.
 
-## 4. Observational A/B: opened the VLE before the start vs not
+## 🆚 4. Observational A/B: opened the VLE before the start vs not
 
 Group A opened the online platform at least once before day 0. Group B did not. Both registered before day 0 and had not withdrawn by then.
 
@@ -137,7 +159,20 @@ I expected the gap to shrink. It grew, because the modules where most students l
 
 That still doesn't make it causal. The controls are what OULAD records. Motivation, spare time and how much someone wanted the course aren't in the data, and they plausibly drive both logging in early and staying. The adjusted number says the gap isn't explained by course or background. It doesn't say that getting students to log in early would cut withdrawals by 14.5 points. To find that out I'd randomise something, for example a pre-start welcome email to half of new registrants, and compare withdrawal between the halves.
 
-## Power BI
+## 🚧 Limitations
+
+- The data is from a UK distance-learning university in 2013 and 2014. A paid online course in 2026 may behave differently.
+- Modules are anonymised, so I can't say what a "hard" assessment was about. Clicks are counts, not time spent.
+- OULAD has no marking date, so the early score assumes marks were back by day 28.
+- The model is tested on one presentation. Another year could give different numbers.
+- One FFF record has an unregistration day after the module ended (week 64). It's in the data but off the weekly chart.
+
+## 🔧 Technical details
+For readers who want the full detail. Click a section to open it.
+
+<details>
+<summary><b>Power BI</b></summary>
+<br>
 
 I can't build a .pbix file on Linux, so the repo has what you need to build one:
 
@@ -147,19 +182,19 @@ I can't build a .pbix file on Linux, so the repo has what you need to build one:
 
 `docs/dashboard.html` is a self-contained HTML version with no scripts.
 
-## Tests
+</details>
+
+<details>
+<summary><b>Tests</b></summary>
+<br>
 
 `make test` runs pytest. The SQL tests use a nine-student fixture in `tests/fixtures/` where I worked out every answer by hand, including the awkward cases: a withdrawal with no date, a Fail with an unregistration day, a late registrant. They cover the funnel, withdrawal weeks, non-submission, the early-feature window, the A/B grouping and the portability rules. The Python tests check the z-test and Holm correction against known values, that the model really holds out its test presentation, and that the adjusted A/B removes a confounder I planted in fake data. Everything runs on DuckDB, so CI needs no database server.
 
-## Limitations
+</details>
 
-- The data is from a UK distance-learning university in 2013 and 2014. A paid online course in 2026 may behave differently.
-- Modules are anonymised, so I can't say what a "hard" assessment was about. Clicks are counts, not time spent.
-- OULAD has no marking date, so the early score assumes marks were back by day 28.
-- The model is tested on one presentation. Another year could give different numbers.
-- One FFF record has an unregistration day after the module ended (week 64). It's in the data but off the weekly chart.
-
-## Repo layout
+<details>
+<summary><b>Repo layout</b></summary>
+<br>
 
 ```
 sql/            schema and one file per question (PostgreSQL and DuckDB)
@@ -171,13 +206,15 @@ docs/           charts, dashboard.html, powerbi.md
 tests/          pytest with a hand-checked fixture
 ```
 
-## Problems I ran into
+</details>
+
+## 🐛 Problems I ran into
 
 - **Students who had already left.** 93 withdrawn students had no unregistration date and were being counted as still enrolled at day 28. Most had no clicks at all. They made the early-warning model look better than it was, so I took them out of the prediction population.
 - **A harder test in one year.** Raw scores flagged hundreds of BBB students as high risk who then stayed, because the first assignment in BBB 2014J was much harder than in earlier years. Ranking each score within its own course run fixed it.
 - **Confounding in the A/B comparison.** Courses where most students log in early also lose more students overall, which hid part of the gap. Adding controls made the gap bigger (from 10.4 to 14.5 points), not smaller. It's still observational, not causal.
 - **Two databases, one answer.** Gradient boosting gave slightly different AUCs on PostgreSQL and DuckDB because the row order differed. Sorting the features and turning off random early stopping made the findings identical on both.
 
-## License
+## 📜 License
 
 Code: MIT, see `LICENSE`. Data: OULAD by The Open University, CC BY 4.0. The sample in `data/sample/` and the tables in `outputs/` are derived from it.
